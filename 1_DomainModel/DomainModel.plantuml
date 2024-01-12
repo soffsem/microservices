@@ -1,0 +1,41 @@
+@startuml
+class User {
+ +id: UUID
+ +name: String
+ +middleName: String
+ +surname: String
+ +birthDate: Date
+ +city: City
+ +contactInfo: ContactInfo
+ +avatarLink: String
+ +aboutUser: String
+}
+
+class City {
+ +id: UUID
+ +cityName: String
+ +countryName: String
+}
+
+class HardSkills {
+ +id: UUID
+ +skill: String
+}
+
+class Subscription {
+ +followeeId: UUID
+ +followerId: UUID
+}
+
+class ContactInfo {
+ +id: UUID
+ +phoneNumber: String
+ +email: String
+ +nickname: String
+}
+
+User *-- Subscription 
+User "n" o-- "1" City
+User "1" *-- "1" ContactInfo
+User "n" o-- "n" HardSkills
+@enduml
