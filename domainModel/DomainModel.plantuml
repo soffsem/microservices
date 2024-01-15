@@ -23,8 +23,8 @@ class HardSkills {
 }
 
 class Subscription {
- +followeeId: UUID
- +followerId: UUID
+ +followeeId: User
+ +followerId: User
 }
 
 class ContactInfo {
