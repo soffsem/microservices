@@ -6,6 +6,10 @@ class User {
  +surname: String
  +birthDate: Date
  +city: City
+ +phoneNumber: String
+ +email: String
+ +nickname: String
+ +passwordHash: String
  +contactInfo: ContactInfo
  +avatarLink: String
  +aboutUser: String
@@ -27,15 +31,7 @@ class Subscription {
  +followerId: User
 }
 
-class ContactInfo {
- +id: UUID
- +phoneNumber: String
- +email: String
- +nickname: String
-}
-
 User *-- Subscription 
 User "n" o-- "1" City
-User "1" *-- "1" ContactInfo
 User "n" o-- "n" HardSkills
 @enduml
