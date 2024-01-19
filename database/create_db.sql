@@ -11,6 +11,8 @@ CREATE TABLE IF NOT EXISTS users_scheme.users
 	birthday date NOT NULL,
 	sex character(1) NOT NULL,
 	city_id integer,
+	phone_number character varying(50) NOT NULL,
+    email character varying NOT NULL
 	nickname character varying(200) NOT NULL,
 	password_hash character varying NOT NULL,
 	avatarLink character varying,
@@ -19,14 +21,14 @@ CREATE TABLE IF NOT EXISTS users_scheme.users
 
 CREATE TABLE IF NOT EXISTS users_scheme.cities
 (
-    id serial NOT NULL primary key,
+    id bigserial NOT NULL primary key,
     city_name character varying(200) NOT NULL,
     country_name character varying(75) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS users_scheme.hardskills
 (
-    id serial NOT NULL primary key,
+    id bigserial NOT NULL primary key,
 	skill character varying(200) NOT NULL
 );
 

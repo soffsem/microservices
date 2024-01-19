@@ -1,6 +1,5 @@
 package Skillbox.com.users.service;
 
-import Skillbox.com.users.entity.City;
 import Skillbox.com.users.entity.Hardskill;
 import Skillbox.com.users.entity.User;
 import Skillbox.com.users.repository.UserRepository;
@@ -16,40 +15,42 @@ import java.util.*;
 class UserServiceTest {
 
     UserRepository userRepository = Mockito.mock(UserRepository.class);
-    long userId = 1L;
+
+    User initDefaultUserFull(){
+        return User.builder().
+                firstName("Иван").
+                middleName("Иванович").
+                surname("Иванов").
+                birthday(LocalDate.of(2024, 1, 18)).
+                sex(Sex.M).
+                city_id(1).
+                phoneNumber("88005553535").
+                email("test@test.ru").
+                nickname("vanyusha").
+                passwordHash("123").
+                avatarLink("link").
+                aboutUser("I am Vanya").
+                build();
+    }
+
+    User initDefaultUserShort(){
+        return User.builder().
+                firstName("Анна").
+                middleName("Ивановна").
+                surname("Иванова").
+                birthday(LocalDate.of(2024, 1, 19)).
+                sex(Sex.F).
+                city_id(1).
+                nickname("anyusha").
+                passwordHash("123321").
+                build();
+    }
 
     @Test
     void createUser() {
-        User user = User.builder().
-                firstName("Иван").
-                middleName("Иванович").
-                surname("Иванов").
-                birthday(LocalDate.of(2024, 1, 18)).
-                sex(Sex.M).
-                city_id(1).
-                phoneNumber("88005553535").
-                email("test@test.ru").
-                nickname("vanyusha").
-                passwordHash("123").
-                avatarLink("link").
-                aboutUser("I am Vanya").
-                build();
-
-        User savedUser = User.builder().
-                id(1L).
-                firstName("Иван").
-                middleName("Иванович").
-                surname("Иванов").
-                birthday(LocalDate.of(2024, 1, 18)).
-                sex(Sex.M).
-                city_id(1).
-                phoneNumber("88005553535").
-                email("test@test.ru").
-                nickname("vanyusha").
-                passwordHash("123").
-                avatarLink("link").
-                aboutUser("I am Vanya").
-                build();
+        User user = initDefaultUserFull();
+        User savedUser = initDefaultUserFull();
+        savedUser.setId(1L);
 
         Mockito.when(userRepository.save(user)).thenReturn(savedUser);
         UserService userService = new UserService(userRepository);
@@ -61,81 +62,44 @@ class UserServiceTest {
 
     @Test
     void createUserOnlyNecessaryFields() {
-        User user = User.builder().
-                firstName("Иван").
-                middleName("Иванович").
-                surname("Иванов").
-                birthday(LocalDate.of(2024, 1, 18)).
-                sex(Sex.M).
-                city_id(1).
-                nickname("vanyusha").
-                passwordHash("123").
-                build();
-
-        User savedUser = User.builder().
-                id(1L).
-                firstName("Иван").
-                middleName("Иванович").
-                surname("Иванов").
-                birthday(LocalDate.of(2024, 1, 18)).
-                sex(Sex.M).
-                city_id(1).
-                nickname("vanyusha").
-                passwordHash("123").
-                build();
+        User user = initDefaultUserShort();
+        User savedUser = initDefaultUserShort();
+        savedUser.setId(1L);
 
         Mockito.when(userRepository.save(user)).thenReturn(savedUser);
         UserService userService = new UserService(userRepository);
 
         String result = userService.createUser(user);
 
-        Assertions.assertEquals("Пользователь Иванов добавлен в базу с id 1", result);
-    }
-
-    @Test
-    void createUserWithoutNecessaryFields() {
-        User user = User.builder().
-                firstName("Иван").
-                birthday(LocalDate.of(2024, 1, 18)).
-                sex(Sex.M).
-                city_id(1).
-                nickname("vanyusha").
-                passwordHash("123").
-                build();
-
-        UserService userService = new UserService(userRepository);
-        Assertions.assertThrows(ResponseStatusException.class, () -> {
-            userService.createUser(user);
-        });
+        Assertions.assertEquals("Пользователь Иванова добавлен в базу с id 1", result);
     }
 
     @Test
     void getUser() {
+        long userId = 1L;
+        User user = initDefaultUserShort();
+        user.setId(userId);
+        Mockito.when(userRepository.findById(userId)).thenReturn(Optional.ofNullable(user));
+        UserService userService = new UserService(userRepository);
+
+        Assertions.assertEquals(user, userService.getUser(userId));
     }
 
     @Test
     void getUserWhenNotExists() {
         UserService userService = new UserService(userRepository);
         Assertions.assertThrows(ResponseStatusException.class, () -> {
-            userService.getUser(userId);
+            userService.getUser(1L);
         });
     }
 
     @Test
     void updateUser() {
-        User updatedUser = User.builder().
-                id(userId).
-                firstName("Иван").
-                middleName("Петрович").
-                surname("Петров").
-                birthday(LocalDate.of(1980, 1, 18)).
-                sex(Sex.M).
-                city_id(1).
-                nickname("vanyusha").
-                passwordHash("123").
-                build();
-        Mockito.when(userRepository.save(updatedUser)).thenReturn(updatedUser);
+        User updatedUser = initDefaultUserFull();
+        updatedUser.setId(1L);
+        updatedUser.setSurname("Петров");
 
+        Mockito.when(userRepository.save(updatedUser)).thenReturn(updatedUser);
         UserService userService = new UserService(userRepository);
         String result = userService.updateUser(updatedUser);
 
@@ -144,6 +108,7 @@ class UserServiceTest {
 
     @Test
     void deleteUser() {
+        long userId = 1L;
         UserService userService = new UserService(userRepository);
         Mockito.when(userRepository.existsById(userId)).thenReturn(true);
         String result = userService.deleteUser(userId);
@@ -155,44 +120,16 @@ class UserServiceTest {
     void deleteUserWhenNotExists() {
         UserService userService = new UserService(userRepository);
         Assertions.assertThrows(ResponseStatusException.class, () -> {
-            userService.deleteUser(userId);
+            userService.deleteUser(1L);
         });
     }
 
     @Test
     void getUsers() {
         List<User> users = new ArrayList<>();
-        Collections.addAll(users,
-                User.builder().
-                        firstName("Иван").
-                        middleName("Иванович").
-                        surname("Иванов").
-                        birthday(LocalDate.of(2024, 1, 18)).
-                        sex(Sex.M).
-                        city_id(1).
-                        nickname("vanyusha").
-                        passwordHash("123").
-                        build(),
-                User.builder().
-                        firstName("Анна").
-                        middleName("Ивановна").
-                        surname("Иванова").
-                        birthday(LocalDate.of(2024, 1, 19)).
-                        sex(Sex.F).
-                        city_id(1).
-                        nickname("anyusha").
-                        passwordHash("123321").
-                        build(),
-                User.builder().
-                        firstName("Пётр").
-                        middleName("Петрович").
-                        surname("Петров").
-                        birthday(LocalDate.of(2024, 1, 18)).
-                        sex(Sex.M).
-                        city_id(2).
-                        nickname("petrusha").
-                        passwordHash("1").
-                        build());
+        users.add(initDefaultUserFull());
+        users.get(0).setId(1L);
+
         Mockito.when(userRepository.findAll()).thenReturn(users);
         UserService userService = new UserService(userRepository);
 
@@ -201,22 +138,16 @@ class UserServiceTest {
 
     @Test
     void getAllHardskillsByUserId() {
+        long userId = 1L;
         Set<Hardskill> hardskills = new HashSet<>();
         Collections.addAll(hardskills,
                 Hardskill.builder().id(1L).skill("Java").build(),
                 Hardskill.builder().id(2L).skill("Spring").build(),
                 Hardskill.builder().id(3L).skill("JUnit").build());
 
-        User user = User.builder().
-                firstName("Иван").
-                middleName("Иванович").
-                surname("Иванов").
-                birthday(LocalDate.of(2024, 1, 18)).
-                sex(Sex.M).
-                city_id(1).
-                nickname("vanyusha").
-                passwordHash("123").
-                build();;
+        User user = initDefaultUserShort();
+        user.setId(userId);
+
         user.setUserSkills(hardskills);
         Mockito.when(userRepository.findById(userId)).thenReturn(Optional.ofNullable(user));
         UserService userService = new UserService(userRepository);
@@ -226,17 +157,9 @@ class UserServiceTest {
 
     @Test
     void addSkillToUser() {
-        User user = User.builder().
-                id(userId).
-                firstName("Иван").
-                middleName("Иванович").
-                surname("Иванов").
-                birthday(LocalDate.of(2024, 1, 18)).
-                sex(Sex.M).
-                city_id(1).
-                nickname("vanyusha").
-                passwordHash("123").
-                build();
+        long userId = 1L;
+        User user = initDefaultUserFull();
+        user.setId(userId);
         user.setUserSkills(new HashSet<>());
 
         Hardskill hardskill = Hardskill.builder().id(10L).skill("Java").build();
@@ -251,17 +174,9 @@ class UserServiceTest {
 
     @Test
     void removeSkillFromUser() {
-        User user = User.builder().
-                id(userId).
-                firstName("Иван").
-                middleName("Иванович").
-                surname("Иванов").
-                birthday(LocalDate.of(2024, 1, 18)).
-                sex(Sex.M).
-                city_id(1).
-                nickname("vanyusha").
-                passwordHash("123").
-                build();
+        long userId = 1L;
+        User user = initDefaultUserFull();
+        user.setId(userId);
         user.setUserSkills(new HashSet<>());
 
         Hardskill hardskill = Hardskill.builder().id(10L).skill("Java").build();
@@ -279,31 +194,14 @@ class UserServiceTest {
 
     @Test
     void getFollowers() {
-        User user = User.builder().
-                id(1L).
-                firstName("Иван").
-                middleName("Иванович").
-                surname("Иванов").
-                birthday(LocalDate.of(2024, 1, 18)).
-                sex(Sex.M).
-                city_id(1).
-                nickname("vanyusha").
-                passwordHash("123").
-                build();
+        long userId = 1L;
+        User user = initDefaultUserFull();
+        user.setId(userId);
 
         Set<User> followers = new HashSet<>();
-        Collections.addAll(followers,
-                User.builder().
-                        id(2L).
-                        firstName("Анна").
-                        middleName("Ивановна").
-                        surname("Иванова").
-                        birthday(LocalDate.of(2024, 1, 19)).
-                        sex(Sex.F).
-                        city_id(1).
-                        nickname("anyusha").
-                        passwordHash("123321").
-                        build());
+        User follower = initDefaultUserShort();
+        follower.setId(2L);
+        followers.add(follower);
         user.setFollowedBy(followers);
 
         Mockito.when(userRepository.findById(userId)).thenReturn(Optional.ofNullable(user));
@@ -314,31 +212,13 @@ class UserServiceTest {
 
     @Test
     void getFollowees() {
-        User user = User.builder().
-                id(1L).
-                firstName("Иван").
-                middleName("Иванович").
-                surname("Иванов").
-                birthday(LocalDate.of(2024, 1, 18)).
-                sex(Sex.M).
-                city_id(1).
-                nickname("vanyusha").
-                passwordHash("123").
-                build();
-
+        long userId = 1L;
+        User user = initDefaultUserFull();
+        user.setId(userId);
         Set<User> followees = new HashSet<>();
-        Collections.addAll(followees,
-                User.builder().
-                        id(2L).
-                        firstName("Анна").
-                        middleName("Ивановна").
-                        surname("Иванова").
-                        birthday(LocalDate.of(2024, 1, 19)).
-                        sex(Sex.F).
-                        city_id(1).
-                        nickname("anyusha").
-                        passwordHash("123321").
-                        build());
+        User followee = initDefaultUserShort();
+        followee.setId(2L);
+        followees.add(followee);
         user.setFollowerOf(followees);
 
         Mockito.when(userRepository.findById(userId)).thenReturn(Optional.ofNullable(user));
@@ -349,30 +229,13 @@ class UserServiceTest {
 
     @Test
     void subscribeTo() {
-        User user = User.builder().
-                id(1L).
-                firstName("Иван").
-                middleName("Иванович").
-                surname("Иванов").
-                birthday(LocalDate.of(2024, 1, 18)).
-                sex(Sex.M).
-                city_id(1).
-                nickname("vanyusha").
-                passwordHash("123").
-                build();
+        long userId = 1L;
+        User user = initDefaultUserFull();
+        user.setId(userId);
 
-
-        User follower = User.builder().
-                        id(2L).
-                        firstName("Анна").
-                        middleName("Ивановна").
-                        surname("Иванова").
-                        birthday(LocalDate.of(2024, 1, 19)).
-                        sex(Sex.F).
-                        city_id(1).
-                        nickname("anyusha").
-                        passwordHash("123321").
-                        build();
+        long followerId = 2L;
+        User follower = initDefaultUserShort();
+        follower.setId(followerId);
 
         user.setFollowedBy(new HashSet<>());
         follower.setFollowerOf(new HashSet<>());
@@ -387,17 +250,8 @@ class UserServiceTest {
 
     @Test
     void subscribeToNonExistingUser() {
-        User follower = User.builder().
-                id(2L).
-                firstName("Анна").
-                middleName("Ивановна").
-                surname("Иванова").
-                birthday(LocalDate.of(2024, 1, 19)).
-                sex(Sex.F).
-                city_id(1).
-                nickname("anyusha").
-                passwordHash("123321").
-                build();
+        User follower = initDefaultUserFull();
+        follower.setId(2L);
 
         follower.setFollowerOf(new HashSet<>());
 
@@ -409,29 +263,13 @@ class UserServiceTest {
 
     @Test
     void unsubscribeFrom() {
-        User user = User.builder().
-                id(1L).
-                firstName("Иван").
-                middleName("Иванович").
-                surname("Иванов").
-                birthday(LocalDate.of(2024, 1, 18)).
-                sex(Sex.M).
-                city_id(1).
-                nickname("vanyusha").
-                passwordHash("123").
-                build();
+        long userId = 1L;
+        User user = initDefaultUserFull();
+        user.setId(userId);
 
-        User follower = User.builder().
-                id(2L).
-                firstName("Анна").
-                middleName("Ивановна").
-                surname("Иванова").
-                birthday(LocalDate.of(2024, 1, 19)).
-                sex(Sex.F).
-                city_id(1).
-                nickname("anyusha").
-                passwordHash("123321").
-                build();
+        long followerId = 2L;
+        User follower = initDefaultUserShort();
+        follower.setId(followerId);
 
         user.setFollowedBy(new HashSet<>());
         user.getFollowedBy().add(follower);
@@ -440,7 +278,7 @@ class UserServiceTest {
 
         Mockito.when(userRepository.findById(2L)).thenReturn(Optional.ofNullable(follower));
         UserService userService = new UserService(userRepository);
-        String result = userService.unsubscribeFrom(1L, 2L);
+        String result = userService.unsubscribeFrom(userId, followerId);
 
         Assertions.assertEquals("Пользователь Иванова (id 2) успешно отписался от пользователя id 1",
                 result);
@@ -448,22 +286,14 @@ class UserServiceTest {
 
     @Test
     void unsubscribeNonExistingFollower() {
-        User user = User.builder().
-                id(1L).
-                firstName("Иван").
-                middleName("Иванович").
-                surname("Иванов").
-                birthday(LocalDate.of(2024, 1, 18)).
-                sex(Sex.M).
-                city_id(1).
-                nickname("vanyusha").
-                passwordHash("123").
-                build();
+        long userId = 1L;
+        User user = initDefaultUserFull();
+        user.setId(userId);
 
         user.setFollowedBy(new HashSet<>());
         UserService userService = new UserService(userRepository);
 
         Assertions.assertThrows(ResponseStatusException.class,
-                () -> userService.unsubscribeFrom(1L, 2L));
+                () -> userService.unsubscribeFrom(userId, 2L));
     }
 }

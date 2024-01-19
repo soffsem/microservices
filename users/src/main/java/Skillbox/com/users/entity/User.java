@@ -28,21 +28,29 @@ public class User {
     @SequenceGenerator(name = "users_id_seq", sequenceName = "users_id_seq", allocationSize = 1)
     @EqualsAndHashCode.Include
     private Long id;
+    @NonNull
     private String firstName;
+    @NonNull
     private String middleName;
+    @NonNull
     private String surname;
+    @NonNull
     private LocalDate birthday;
-
     @Enumerated(EnumType.STRING)
+    @NonNull
     private Sex sex;
     private Integer city_id;
+    @Column(unique = true)
     private String nickname;
+    @Column(unique = true)
     private String phoneNumber;
+    @Column(unique = true)
     private String email;
     private String passwordHash;
     private String avatarLink;
     private String aboutUser;
 
+    @Builder.Default
     private boolean deleted = Boolean.FALSE;
 
     @JsonIgnore

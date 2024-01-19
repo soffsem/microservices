@@ -20,8 +20,11 @@ public class City {
     @SequenceGenerator(name = "cities_id_seq", sequenceName = "cities_id_seq", allocationSize = 1)
     @Column(updatable = false)
     private Long id;
+    @NonNull
     private String cityName;
+    @NonNull
     private String countryName;
 
+    @Builder.Default
     private boolean deleted = Boolean.FALSE;
 }

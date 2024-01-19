@@ -24,8 +24,11 @@ public class Hardskill {
     @SequenceGenerator(name = "hardskills_id_seq", sequenceName = "hardskills_id_seq", allocationSize = 1)
     @Column(updatable = false, nullable = false)
     private Long id;
+    @NonNull
+    @Column(unique = true)
     private String skill;
 
+    @Builder.Default
     private boolean deleted = Boolean.FALSE;
 
     @JsonIgnore
