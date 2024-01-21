@@ -1,6 +1,8 @@
 HELP.md
 .gradle
 build/
+pgadmin_data/
+postgres_data/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/

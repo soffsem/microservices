@@ -1,0 +1,39 @@
+services:
+  postgres:
+    image: 'postgres:latest'
+    container_name: 'postgres-container'
+    ports:
+      - 5432:5432
+    volumes:
+      - ./src/main/resources/sql:/docker-entrypoint-initdb.d
+      - ./postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=skillbox
+      - POSTGRES_PASSWORD=123
+      - POSTGRES_DB=users
+
+  pgAdmin:
+    image: 'dpage/pgadmin4:latest'
+    container_name: 'pgadmin-container'
+    ports:
+      - 5050:80
+    volumes:
+      - "./pgadmin_data:/var/lib/pgadmin"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=root@admin.org
+      - PGADMIN_DEFAULT_PASSWORD=pgpass
+    restart: unless-stopped
+    depends_on:
+      - postgres
+
+  users:
+    build: /.
+    container_name: 'users-container'
+    environment:
+      - POSTGRES_USER=skillbox
+      - POSTGRES_PASSWORD=123
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/users
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres
