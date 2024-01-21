@@ -20,8 +20,7 @@ import java.util.Set;
 @Builder
 public class Hardskill {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "hardskills_id_seq")
-    @SequenceGenerator(name = "hardskills_id_seq", sequenceName = "hardskills_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(updatable = false, nullable = false)
     private Long id;
     @NonNull

@@ -16,8 +16,7 @@ import org.hibernate.annotations.Where;
 @Builder
 public class City {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cities_id_seq")
-    @SequenceGenerator(name = "cities_id_seq", sequenceName = "cities_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(updatable = false)
     private Long id;
     @NonNull

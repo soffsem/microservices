@@ -1,0 +1,295 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20240121-000-1
+      author: soffsem
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: first_name
+                  type: varchar
+                  constraints:
+                    nullable: false
+              - column:
+                  name: middle_name
+                  type: varchar
+              - column:
+                  name: surname
+                  type: varchar
+                  constraints:
+                    nullable: false
+              - column:
+                  name: birthday
+                  type: date
+                  constraints:
+                    nullable: false
+              - column:
+                  name: sex
+                  type: varchar
+                  constraints:
+                    nullable: false
+              - column:
+                  name: city_id
+                  type: int
+              - column:
+                  name: phone_number
+                  type: varchar
+              - column:
+                  name: email
+                  type: varchar
+              - column:
+                  name: nickname
+                  type: varchar
+                  constraints:
+                    nullable: false
+              - column:
+                  name: password_hash
+                  type: varchar
+                  constraints:
+                    nullable: false
+              - column:
+                  name: avatar_link
+                  type: varchar
+              - column:
+                  name: about_user
+                  type: clob
+
+  - changeSet:
+      id: 20240121-000-2
+      author: soffsem
+      changes:
+        - createTable:
+            tableName: cities
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: city_name
+                  type: varchar
+                  constraints:
+                    nullable: false
+              - column:
+                  name: country_name
+                  type: varchar
+                  constraints:
+                    nullable: false
+
+
+  - changeSet:
+      id: 20240121-000-3
+      author: soffsem
+      changes:
+        - createTable:
+            tableName: hardskills
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: skill
+                  type: varchar
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 20240121-000-4
+      author: soffsem
+      changes:
+        - createTable:
+            tableName: subscriptions
+            columns:
+              - column:
+                  name: followee_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: follower_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 20240121-000-5
+      author: soffsem
+      changes:
+        - createTable:
+            tableName: users_hardskills
+            columns:
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: skill_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 20240121-000-6
+      author: soffsem
+      changes:
+        - addPrimaryKey:
+            tableName: subscriptions
+            columnNames: followee_id, follower_id
+            constraintName: subscriptions_pk
+
+  - changeSet:
+      id: 20240121-000-7
+      author: soffsem
+      changes:
+        - addPrimaryKey:
+            tableName: users_hardskills
+            columnNames: user_id, skill_id
+            constraintName: users_hardskills_pk
+
+  - changeSet:
+      id: 20240121-000-8
+      author: soffsem
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: users
+            baseColumnNames: city_id
+            referencedTableName: cities
+            referencedColumnNames: id
+            constraintName: city_id_fk
+            onDelete: set null
+
+  - changeSet:
+      id: 20240121-000-9
+      author: soffsem
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: subscriptions
+            baseColumnNames: followee_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: followee_id_fk
+            onDelete: cascade
+
+  - changeSet:
+      id: 20240121-000-10
+      author: soffsem
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: subscriptions
+            baseColumnNames: follower_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: follower_id_fk
+            onDelete: cascade
+
+  - changeSet:
+      id: 20240121-000-11
+      author: soffsem
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: users_hardskills
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: user_id_fk
+            onDelete: cascade
+
+  - changeSet:
+      id: 20240121-000-12
+      author: soffsem
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: users_hardskills
+            baseColumnNames: skill_id
+            referencedTableName: hardskills
+            referencedColumnNames: id
+            constraintName: skill_id_fk
+            onDelete: null
+
+  - changeSet:
+      id: 20240121-000-13
+      author: soffsem
+      changes:
+        - createIndex:
+            indexName: i_users_sex
+            tableName: users
+            columns:
+              - column:
+                  name: sex
+
+  - changeSet:
+      id: 20240121-000-14
+      author: soffsem
+      changes:
+        - createIndex:
+            indexName: i_cities_city_name
+            tableName: cities
+            columns:
+              - column:
+                  name: city_name
+
+  - changeSet:
+      id: 20240121-000-15
+      author: soffsem
+      changes:
+        - createIndex:
+            indexName: i_users_name
+            tableName: users
+            columns:
+              - column:
+                  name: surname
+              - column:
+                  name: first_name
+
+  - changeSet:
+      id: 20240121-000-16
+      author: soffsem
+      changes:
+        - createIndex:
+            indexName: i_hardskills_skill
+            tableName: hardskills
+            columns:
+              - column:
+                  name: skill
+
+  - changeSet:
+      id: 20240121-000-17
+      author: soffsem
+      changes:
+        - createIndex:
+            indexName: i_subscriptions_follower_followee
+            tableName: subscriptions
+            columns:
+              - column:
+                  name: follower_id
+              - column:
+                  name: followee_id
+
+  - changeSet:
+      id: 20240121-000-18
+      author: soffsem
+      changes:
+        - createIndex:
+            indexName: i_users_hardskills_skill_user
+            tableName: users_hardskills
+            columns:
+              - column:
+                  name: skill_id
+              - column:
+                  name: user_id
