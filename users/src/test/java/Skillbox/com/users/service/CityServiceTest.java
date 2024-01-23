@@ -5,6 +5,7 @@ import Skillbox.com.users.repository.CityRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
@@ -23,9 +24,9 @@ class CityServiceTest {
         Mockito.when(cityRepository.save(city)).thenReturn(savedCity);
         CityService cityService = new CityService(cityRepository);
 
-        String result = cityService.createCity(city);
+        City result = cityService.createCity(city);
 
-        Assertions.assertEquals("Город Москва добавлен в базу с id 1", result);
+        Assertions.assertEquals(savedCity, result);
     }
 
     @Test
@@ -51,18 +52,18 @@ class CityServiceTest {
         Mockito.when(cityRepository.save(updatedCity)).thenReturn(updatedCity);
 
         CityService cityService = new CityService(cityRepository);
-        String result = cityService.updateCity(updatedCity);
+        City result = cityService.updateCity(updatedCity);
 
-        Assertions.assertEquals("Город Санкт-Петербург успешно сохранён", result);
+        Assertions.assertEquals(updatedCity, result);
     }
 
     @Test
     void deleteCity() {
         CityService cityService = new CityService(cityRepository);
         Mockito.when(cityRepository.existsById(cityId)).thenReturn(true);
-        String result = cityService.deleteCity(cityId);
+        ResponseEntity<Void> result = cityService.deleteCity(cityId);
 
-        Assertions.assertEquals("Город (id 1) успешно удалён", result);
+        Assertions.assertEquals(ResponseEntity.noContent().build(), result);
     }
 
     @Test

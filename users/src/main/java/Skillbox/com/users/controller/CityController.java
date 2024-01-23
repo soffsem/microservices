@@ -1,10 +1,10 @@
 package Skillbox.com.users.controller;
 
 import Skillbox.com.users.entity.City;
-import Skillbox.com.users.entity.User;
 import Skillbox.com.users.service.CityService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,7 +18,7 @@ public class CityController {
 
     @Operation(summary = "Добавление города")
     @PostMapping
-    String createCity(@RequestBody City city) {
+    City createCity(@RequestBody City city) {
         return cityService.createCity(city);
     }
 
@@ -30,14 +30,14 @@ public class CityController {
 
     @Operation(summary = "Обновление города")
     @PutMapping(path = "/{id}")
-    String updateCity(@RequestBody City city, @PathVariable long id) {
+    City updateCity(@RequestBody City city, @PathVariable long id) {
         city.setId(id);
         return cityService.updateCity(city);
     }
 
     @Operation(summary = "Удаление города")
     @DeleteMapping(path = "/{id}")
-    String deleteCity(@PathVariable long id){
+    ResponseEntity<Void> deleteCity(@PathVariable long id){
         return cityService.deleteCity(id);
     }
 

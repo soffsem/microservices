@@ -1,21 +1,17 @@
 package Skillbox.com.users.service;
 
-import Skillbox.com.users.entity.City;
 import Skillbox.com.users.entity.Hardskill;
-import Skillbox.com.users.repository.CityRepository;
 import Skillbox.com.users.repository.HardskillRepository;
-import Skillbox.com.users.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class HardskillServiceTest {
 
@@ -29,9 +25,9 @@ class HardskillServiceTest {
         Mockito.when(hardskillRepository.save(hardskill)).thenReturn(savedHardskill);
         HardskillService hardskillService = new HardskillService(hardskillRepository);
 
-        String result = hardskillService.createHardskill(hardskill);
+        Hardskill result = hardskillService.createHardskill(hardskill);
 
-        Assertions.assertEquals("Навык Java добавлен в базу с id 1", result);
+        Assertions.assertEquals(savedHardskill, result);
     }
 
     @Test
@@ -57,18 +53,18 @@ class HardskillServiceTest {
         Mockito.when(hardskillRepository.save(updatedHardskill)).thenReturn(updatedHardskill);
 
         HardskillService hardskillService = new HardskillService(hardskillRepository);
-        String result = hardskillService.updateHardskill(updatedHardskill);
+        Hardskill result = hardskillService.updateHardskill(updatedHardskill);
 
-        Assertions.assertEquals("Навык C++ (id 1) успешно сохранён", result);
+        Assertions.assertEquals(updatedHardskill, result);
     }
 
     @Test
     void deleteHardskill() {
         HardskillService hardskillService = new HardskillService(hardskillRepository);
         Mockito.when(hardskillRepository.existsById(skillId)).thenReturn(true);
-        String result = hardskillService.deleteHardskill(skillId);
+        ResponseEntity<Void> result = hardskillService.deleteHardskill(skillId);
 
-        Assertions.assertEquals("Навык (id 1) успешно удалён", result);
+        Assertions.assertEquals(ResponseEntity.noContent().build(), result);
     }
 
     @Test

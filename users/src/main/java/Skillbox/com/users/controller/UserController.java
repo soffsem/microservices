@@ -4,8 +4,8 @@ import Skillbox.com.users.entity.Hardskill;
 import Skillbox.com.users.entity.User;
 import Skillbox.com.users.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.models.annotations.OpenAPI30;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,7 +20,7 @@ public class UserController {
 
     @Operation(summary = "Добавление пользователя")
     @PostMapping
-    String createUser(@RequestBody User user) {
+    User createUser(@RequestBody User user) {
         return userService.createUser(user);
     }
 
@@ -32,14 +32,14 @@ public class UserController {
 
     @Operation(summary = "Обновление пользователя")
     @PutMapping(path = "/{id}")
-    String updateUser(@RequestBody User user, @PathVariable long id) {
+    User updateUser(@RequestBody User user, @PathVariable long id) {
         user.setId(id);
         return userService.updateUser(user);
     }
 
     @Operation(summary = "Удаление пользователя")
     @DeleteMapping(path = "/{id}")
-    String deleteUser(@PathVariable long id){
+    ResponseEntity<Void> deleteUser(@PathVariable long id){
         return userService.deleteUser(id);
     }
 
@@ -57,13 +57,13 @@ public class UserController {
 
     @Operation(summary = "Добавление навыка пользователю")
     @PostMapping(path = "/{id}/hardskills")
-    String addSkillToUser(@RequestBody Hardskill hardskill, @PathVariable Long id) {
+    User addSkillToUser(@RequestBody Hardskill hardskill, @PathVariable Long id) {
         return userService.addSkillToUser(hardskill, id);
     }
 
     @Operation(summary = "Удаление навыка у пользователя")
     @DeleteMapping(path = "/{id}/hardskills/{hardskillId}")
-    String removeSkillFromUser(@PathVariable long id, @PathVariable long hardskillId) {
+    ResponseEntity<Void> removeSkillFromUser(@PathVariable long id, @PathVariable long hardskillId) {
         return userService.removeSkillFromUser(id, hardskillId);
     }
 
@@ -81,13 +81,13 @@ public class UserController {
 
     @Operation(summary = "Подписка на нового пользователя")
     @PostMapping(path = "/{followeeId}/followers")
-    String subscribeTo(@RequestBody User follower, @PathVariable long followeeId) {
+    User subscribeTo(@RequestBody User follower, @PathVariable long followeeId) {
         return userService.subscribeTo(follower, followeeId);
     }
 
     @Operation(summary = "Отписка от пользователя")
     @DeleteMapping(path = "/{followeeId}/followers/{followerId}")
-    String unsubscribeFrom(@PathVariable long followeeId, @PathVariable long followerId) {
+    User unsubscribeFrom(@PathVariable long followeeId, @PathVariable long followerId) {
         return userService.unsubscribeFrom(followeeId, followerId);
     }
 }

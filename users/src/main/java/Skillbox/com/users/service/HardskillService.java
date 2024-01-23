@@ -5,7 +5,9 @@ import Skillbox.com.users.repository.HardskillRepository;
 import Skillbox.com.users.repository.UserRepository;
 import Skillbox.com.users.utils.Utils;
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.server.ResponseStatusException;
@@ -14,27 +16,31 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
+@Log4j2
 public class HardskillService {
     private final HardskillRepository hardskillRepository;
 
-    public String createHardskill(Hardskill hardskill) {
+    public Hardskill createHardskill(Hardskill hardskill) {
         Hardskill savedHardskill = hardskillRepository.save(hardskill);
-        return String.format("Навык %s добавлен в базу с id %s", savedHardskill.getSkill(), savedHardskill.getId());
+        log.info(String.format("Навык %s добавлен в базу с id %s", savedHardskill.getSkill(), savedHardskill.getId()));
+        return savedHardskill;
     }
 
     public Hardskill getHardskill(long id) {
         return hardskillRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    public String updateHardskill(Hardskill hardskill) {
+    public Hardskill updateHardskill(Hardskill hardskill) {
         Hardskill savedHardskill = hardskillRepository.save(hardskill);
-        return String.format("Навык %s (id %s) успешно сохранён", savedHardskill.getSkill(), savedHardskill.getId());
+        log.info(String.format("Навык %s (id %s) успешно сохранён", savedHardskill.getSkill(), savedHardskill.getId()));
+        return savedHardskill;
     }
 
-    public String deleteHardskill(long id) {
+    public ResponseEntity<Void> deleteHardskill(long id) {
         Utils.verifyIdExists(hardskillRepository, id);
         hardskillRepository.deleteById(id);
-        return String.format("Навык (id %s) успешно удалён", id);
+        log.info(String.format("Навык (id %s) успешно удалён", id));
+        return ResponseEntity.noContent().build();
     }
 
     public List<Hardskill> getHardskills() {

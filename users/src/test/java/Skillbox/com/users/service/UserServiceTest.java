@@ -7,6 +7,7 @@ import Skillbox.com.users.utils.Sex;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
@@ -55,9 +56,9 @@ class UserServiceTest {
         Mockito.when(userRepository.save(user)).thenReturn(savedUser);
         UserService userService = new UserService(userRepository);
 
-        String result = userService.createUser(user);
+        User result = userService.createUser(user);
 
-        Assertions.assertEquals("Пользователь Иванов добавлен в базу с id 1", result);
+        Assertions.assertEquals(savedUser, result);
     }
 
     @Test
@@ -69,9 +70,9 @@ class UserServiceTest {
         Mockito.when(userRepository.save(user)).thenReturn(savedUser);
         UserService userService = new UserService(userRepository);
 
-        String result = userService.createUser(user);
+        User result = userService.createUser(user);
 
-        Assertions.assertEquals("Пользователь Иванова добавлен в базу с id 1", result);
+        Assertions.assertEquals(savedUser, result);
     }
 
     @Test
@@ -101,9 +102,9 @@ class UserServiceTest {
 
         Mockito.when(userRepository.save(updatedUser)).thenReturn(updatedUser);
         UserService userService = new UserService(userRepository);
-        String result = userService.updateUser(updatedUser);
+        User result = userService.updateUser(updatedUser);
 
-        Assertions.assertEquals("Пользователь Петров (id 1) успешно сохранён", result);
+        Assertions.assertEquals(updatedUser, result);
     }
 
     @Test
@@ -111,9 +112,9 @@ class UserServiceTest {
         long userId = 1L;
         UserService userService = new UserService(userRepository);
         Mockito.when(userRepository.existsById(userId)).thenReturn(true);
-        String result = userService.deleteUser(userId);
+        ResponseEntity<Void> result = userService.deleteUser(userId);
 
-        Assertions.assertEquals("Пользователь (id 1) успешно удалён", result);
+        Assertions.assertEquals(ResponseEntity.noContent().build(), result);
     }
 
     @Test
@@ -167,9 +168,9 @@ class UserServiceTest {
 
         Mockito.when(userRepository.findById(userId)).thenReturn(Optional.ofNullable(user));
         UserService userService = new UserService(userRepository);
-        String result = userService.addSkillToUser(hardskill, userId);
+        User result = userService.addSkillToUser(hardskill, userId);
 
-        Assertions.assertEquals("Пользователю Иванов (id 1) успешно добавлен навык Java (id 10)", result);
+        Assertions.assertEquals(user, result);
     }
 
     @Test
@@ -187,9 +188,9 @@ class UserServiceTest {
 
         Mockito.when(userRepository.findById(userId)).thenReturn(Optional.ofNullable(user));
         UserService userService = new UserService(userRepository);
-        String result = userService.removeSkillFromUser(userId, 10L);
+        ResponseEntity<Void> result = userService.removeSkillFromUser(userId, 10L);
 
-        Assertions.assertEquals("Пользователю Иванов (id 1) успешно удалён навык 10", result);
+        Assertions.assertEquals(ResponseEntity.noContent().build(), result);
     }
 
     @Test
@@ -242,10 +243,9 @@ class UserServiceTest {
 
         Mockito.when(userRepository.findById(userId)).thenReturn(Optional.ofNullable(user));
         UserService userService = new UserService(userRepository);
-        String result = userService.subscribeTo(follower, userId);
+        User result = userService.subscribeTo(follower, userId);
 
-        Assertions.assertEquals("Пользователь Иванова (id 2) успешно подписался на пользователя Иванов (id 1)",
-                result);
+        Assertions.assertEquals(user, result);
     }
 
     @Test
@@ -278,10 +278,9 @@ class UserServiceTest {
 
         Mockito.when(userRepository.findById(2L)).thenReturn(Optional.ofNullable(follower));
         UserService userService = new UserService(userRepository);
-        String result = userService.unsubscribeFrom(userId, followerId);
+        User result = userService.unsubscribeFrom(userId, followerId);
 
-        Assertions.assertEquals("Пользователь Иванова (id 2) успешно отписался от пользователя id 1",
-                result);
+        Assertions.assertEquals(follower, result);
     }
 
     @Test

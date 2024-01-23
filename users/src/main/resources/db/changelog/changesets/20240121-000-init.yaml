@@ -293,3 +293,58 @@ databaseChangeLog:
                   name: skill_id
               - column:
                   name: user_id
+
+  - changeSet:
+      id: 20240121-000-19
+      author: soffsem
+      changes:
+        - createIndex:
+            indexName: i_users_city_id_fk
+            tableName: users
+            columns:
+              - column:
+                  name: city_id
+
+  - changeSet:
+      id: 20240121-000-20
+      author: soffsem
+      changes:
+        - createIndex:
+            indexName: i_subscriptions_follower_id_fk
+            tableName: subscriptions
+            columns:
+              - column:
+                  name: follower_id
+
+  - changeSet:
+      id: 20240121-000-20
+      author: soffsem
+      changes:
+        - createIndex:
+            indexName: i_subscriptions_followee_id_fk
+            tableName: subscriptions
+            columns:
+              - column:
+                  name: followee_id
+
+  - changeSet:
+      id: 20240121-000-21
+      author: soffsem
+      changes:
+        - createIndex:
+            indexName: i_users_hardskills_user_id_fk
+            tableName: users_hardskills
+            columns:
+              - column:
+                  name: user_id
+
+  - changeSet:
+      id: 20240121-000-22
+      author: soffsem
+      changes:
+        - createIndex:
+            indexName: i_users_hardskills_skill_id_fk
+            tableName: users_hardskills
+            columns:
+              - column:
+                  name: skill_id
