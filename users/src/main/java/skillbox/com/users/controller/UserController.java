@@ -1,13 +1,19 @@
-package Skillbox.com.users.controller;
+package skillbox.com.users.controller;
 
-import Skillbox.com.users.entity.Hardskill;
-import Skillbox.com.users.entity.User;
-import Skillbox.com.users.service.UserService;
+import skillbox.com.users.entity.Hardskill;
+import skillbox.com.users.entity.User;
+import skillbox.com.users.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PathVariable;
 import java.util.List;
 import java.util.Set;
 
@@ -26,7 +32,7 @@ public class UserController {
 
     @Operation(summary = "Получение пользователя")
     @GetMapping(path = "/{id}")
-    User getUser(@PathVariable long id){
+    User getUser(@PathVariable long id) {
         return userService.getUser(id);
     }
 
@@ -39,7 +45,7 @@ public class UserController {
 
     @Operation(summary = "Удаление пользователя")
     @DeleteMapping(path = "/{id}")
-    ResponseEntity<Void> deleteUser(@PathVariable long id){
+    ResponseEntity<Void> deleteUser(@PathVariable long id) {
         return userService.deleteUser(id);
     }
 
@@ -51,7 +57,7 @@ public class UserController {
 
     @Operation(summary = "Получение списка навыков пользователя")
     @GetMapping(path = "/{id}/hardskills")
-    Set<Hardskill> getAllHardskillsByUserId(@PathVariable long id ) {
+    Set<Hardskill> getAllHardskillsByUserId(@PathVariable long id) {
         return userService.getAllHardskillsByUserId(id);
     }
 

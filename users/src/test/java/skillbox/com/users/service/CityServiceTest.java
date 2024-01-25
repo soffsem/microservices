@@ -1,12 +1,12 @@
-package Skillbox.com.users.service;
+package skillbox.com.users.service;
 
-import Skillbox.com.users.entity.City;
-import Skillbox.com.users.repository.CityRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ResponseStatusException;
+import skillbox.com.users.entity.City;
+import skillbox.com.users.repository.CityRepository;
 
 import java.util.ArrayList;
 import java.util.Collections;

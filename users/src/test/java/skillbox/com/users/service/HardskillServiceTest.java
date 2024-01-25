@@ -1,7 +1,7 @@
-package Skillbox.com.users.service;
+package skillbox.com.users.service;
 
-import Skillbox.com.users.entity.Hardskill;
-import Skillbox.com.users.repository.HardskillRepository;
+import skillbox.com.users.entity.Hardskill;
+import skillbox.com.users.repository.HardskillRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

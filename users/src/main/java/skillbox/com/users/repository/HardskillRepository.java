@@ -1,6 +1,6 @@
-package Skillbox.com.users.repository;
+package skillbox.com.users.repository;
 
-import Skillbox.com.users.entity.Hardskill;
+import skillbox.com.users.entity.Hardskill;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

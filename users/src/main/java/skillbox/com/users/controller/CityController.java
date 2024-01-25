@@ -1,11 +1,18 @@
-package Skillbox.com.users.controller;
+package skillbox.com.users.controller;
 
-import Skillbox.com.users.entity.City;
-import Skillbox.com.users.service.CityService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PathVariable;
+import skillbox.com.users.entity.City;
+import skillbox.com.users.service.CityService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -37,7 +44,7 @@ public class CityController {
 
     @Operation(summary = "Удаление города")
     @DeleteMapping(path = "/{id}")
-    ResponseEntity<Void> deleteCity(@PathVariable long id){
+    ResponseEntity<Void> deleteCity(@PathVariable long id) {
         return cityService.deleteCity(id);
     }
 

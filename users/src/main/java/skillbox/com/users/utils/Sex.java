@@ -1,4 +1,4 @@
-package Skillbox.com.users.utils;
+package skillbox.com.users.utils;
 
 public enum Sex {
     M,

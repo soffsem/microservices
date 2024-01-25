@@ -1,50 +1,48 @@
-package Skillbox.com.users.service;
+package skillbox.com.users.service;
 
-import Skillbox.com.users.entity.Hardskill;
-import Skillbox.com.users.entity.User;
-import Skillbox.com.users.repository.UserRepository;
-import Skillbox.com.users.utils.Sex;
+import skillbox.com.users.entity.Hardskill;
+import skillbox.com.users.entity.User;
+import skillbox.com.users.repository.UserRepository;
+import skillbox.com.users.utils.Sex;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.time.LocalDate;
 import java.util.*;
-
 class UserServiceTest {
 
     UserRepository userRepository = Mockito.mock(UserRepository.class);
 
-    User initDefaultUserFull(){
-        return User.builder().
-                firstName("Иван").
-                middleName("Иванович").
-                surname("Иванов").
-                birthday(LocalDate.of(2024, 1, 18)).
-                sex(Sex.M).
-                city_id(1).
-                phoneNumber("88005553535").
-                email("test@test.ru").
-                nickname("vanyusha").
-                passwordHash("123").
-                avatarLink("link").
-                aboutUser("I am Vanya").
-                build();
+    User initDefaultUserFull() {
+        return User.builder()
+                .firstName("Иван")
+                .middleName("Иванович")
+                .surname("Иванов")
+                .birthday(LocalDate.of(2024, 1, 18))
+                .sex(Sex.M)
+                .cityId(1)
+                .phoneNumber("88005553535")
+                .email("test@test.ru")
+                .nickname("vanyusha")
+                .passwordHash("123")
+                .avatarLink("link")
+                .aboutUser("I am Vanya")
+                .build();
     }
 
-    User initDefaultUserShort(){
-        return User.builder().
-                firstName("Анна").
-                middleName("Ивановна").
-                surname("Иванова").
-                birthday(LocalDate.of(2024, 1, 19)).
-                sex(Sex.F).
-                city_id(1).
-                nickname("anyusha").
-                passwordHash("123321").
-                build();
+    User initDefaultUserShort() {
+        return User.builder()
+                .firstName("Анна")
+                .middleName("Ивановна")
+                .surname("Иванова")
+                .birthday(LocalDate.of(2024, 1, 19))
+                .sex(Sex.F)
+                .cityId(1)
+                .nickname("anyusha")
+                .passwordHash("123321")
+                .build();
     }
 
     @Test

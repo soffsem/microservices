@@ -1,15 +1,13 @@
-package Skillbox.com.users.service;
+package skillbox.com.users.service;
 
-import Skillbox.com.users.entity.Hardskill;
-import Skillbox.com.users.repository.HardskillRepository;
-import Skillbox.com.users.repository.UserRepository;
-import Skillbox.com.users.utils.Utils;
+import skillbox.com.users.entity.Hardskill;
+import skillbox.com.users.repository.HardskillRepository;
+import skillbox.com.users.utils.Utils;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;

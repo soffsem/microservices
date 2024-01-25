@@ -1,16 +1,28 @@
-package Skillbox.com.users.entity;
+package skillbox.com.users.entity;
 
-import Skillbox.com.users.utils.Sex;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.EnumType;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.NonNull;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+import skillbox.com.users.utils.Sex;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Table;
-import org.hibernate.annotations.*;
-import lombok.*;
-
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -37,7 +49,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     @NonNull
     private Sex sex;
-    private Integer city_id;
+    private Integer cityId;
     @Column(unique = true)
     @NonNull
     private String nickname;
@@ -82,7 +94,7 @@ public class User {
 
     public void unfollow(Long id) {
         User user = this.followerOf.stream().filter(u -> u.getId() == id).findFirst().orElse(null);
-        if(user != null) {
+        if (user != null) {
             this.followerOf.remove(user);
             user.followedBy.remove(this);
         }
@@ -95,7 +107,7 @@ public class User {
 
     public void removeSkill(Long id) {
         Hardskill hardskill = this.userSkills.stream().filter(h -> h.getId() == id).findFirst().orElse(null);
-        if(hardskill != null) {
+        if (hardskill != null) {
             this.userSkills.remove(hardskill);
             hardskill.getUsers().remove(this);
         }

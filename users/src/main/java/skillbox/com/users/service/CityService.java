@@ -1,8 +1,8 @@
-package Skillbox.com.users.service;
+package skillbox.com.users.service;
 
-import Skillbox.com.users.entity.City;
-import Skillbox.com.users.repository.CityRepository;
-import Skillbox.com.users.utils.Utils;
+import skillbox.com.users.entity.City;
+import skillbox.com.users.repository.CityRepository;
+import skillbox.com.users.utils.Utils;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -18,7 +18,7 @@ import java.util.List;
 public class CityService {
     private final CityRepository cityRepository;
 
-    public City createCity(City city){
+    public City createCity(City city) {
         City savedCity = cityRepository.save(city);
         log.info(String.format("Город %s добавлен в базу с id %s", savedCity.getCityName(), savedCity.getId()));
         return savedCity;

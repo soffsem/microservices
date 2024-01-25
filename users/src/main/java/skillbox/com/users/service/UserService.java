@@ -1,18 +1,14 @@
-package Skillbox.com.users.service;
+package skillbox.com.users.service;
 
-import Skillbox.com.users.entity.Hardskill;
-import Skillbox.com.users.entity.User;
-import Skillbox.com.users.repository.HardskillRepository;
-import Skillbox.com.users.repository.UserRepository;
-import Skillbox.com.users.utils.Utils;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import skillbox.com.users.entity.Hardskill;
+import skillbox.com.users.entity.User;
+import skillbox.com.users.repository.UserRepository;
+import skillbox.com.users.utils.Utils;
 import lombok.AllArgsConstructor;
-import lombok.NonNull;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -51,7 +47,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Set<Hardskill> getAllHardskillsByUserId(Long id){
+    public Set<Hardskill> getAllHardskillsByUserId(Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         return user.getUserSkills();
     }
