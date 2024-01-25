@@ -44,4 +44,8 @@ public class CityService {
     public List<City> getCities() {
         return cityRepository.findAll();
     }
+
+    public void deleteAll() {
+        cityRepository.deleteAll();
+    }
 }

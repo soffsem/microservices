@@ -46,4 +46,8 @@ public class HardskillService {
     public List<Hardskill> getHardskills() {
         return hardskillRepository.findAll();
     }
+
+    public void deleteAll() {
+        hardskillRepository.deleteAll();
+    }
 }

@@ -101,4 +101,8 @@ public class UserService {
                 follower.getSurname(), follower.getId(), followeeId));
         return follower;
     }
+
+    public void deleteAll() {
+        userRepository.deleteAll();
+    }
 }

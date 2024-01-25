@@ -29,7 +29,6 @@ public class User {
     private Long id;
     @NonNull
     private String firstName;
-    @NonNull
     private String middleName;
     @NonNull
     private String surname;
@@ -40,11 +39,13 @@ public class User {
     private Sex sex;
     private Integer city_id;
     @Column(unique = true)
+    @NonNull
     private String nickname;
     @Column(unique = true)
     private String phoneNumber;
     @Column(unique = true)
     private String email;
+    @NonNull
     private String passwordHash;
     private String avatarLink;
     private String aboutUser;
